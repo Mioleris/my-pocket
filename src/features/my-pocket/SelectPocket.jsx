@@ -15,14 +15,14 @@ function PocketEvent(props) {
     }
 
     return (
-        <div className="dropdown">
-            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div className="dropdown" id={props.id}>
+            <button className="btn dropdown-toggle" type="button" id={`${props.id}-main-value`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 { formatedPocketName(props.activePocket) }
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {props.allPockets.map((pocket, index) => {
                     return (
-                        <button key={index} className="dropdown-item" onClick={ () => dispatch(props.onPocketClick(pocket.currency)) }>
+                        <button id={`${props.id}-select-${pocket.currency.toLowerCase()}`} key={index} className="dropdown-item" onClick={ () => dispatch(props.onPocketClick(pocket.currency)) }>
                             { formatedPocketName(pocket) }
                         </button>
                     );
@@ -35,7 +35,8 @@ function PocketEvent(props) {
 PocketEvent.propTypes = {
     activePocket: PropTypes.object,
     allPockets: PropTypes.array,
-    onPocketClick: PropTypes.func
+    onPocketClick: PropTypes.func,
+    id: PropTypes.string
 };
 
 export default PocketEvent;

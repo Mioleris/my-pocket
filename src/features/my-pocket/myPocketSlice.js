@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, compose } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const BASE_CURRENCY = 'EUR';
@@ -6,7 +6,7 @@ const BASE_CURRENCY = 'EUR';
 export const fetchExchangerates = createAsyncThunk(
     'myPocket/fetchExchangerates',
     async () => {
-        const response = await axios.get('https://api.exchangeratesapi.io/latest?base=EUR')
+        const response = await axios.get('https://api.exchangeratesapi.io/latest?base=EUR');
         return await response.data;
     }
   )

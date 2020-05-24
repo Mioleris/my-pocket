@@ -21,7 +21,7 @@ import SelectPocket from './SelectPocket.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExchangeAlt, faChartLine, faMinus, faPlus, faSync } from '@fortawesome/free-solid-svg-icons';
 
-function ExchangePocket() {
+function ExchangePocket(props) {
     const currencies = useSelector(selectCurrentRates);
     // const ratesIsLoading = useSelector(selectRatesIsLoading);
     const myPockets = useSelector(selectPockets);
@@ -41,28 +41,29 @@ function ExchangePocket() {
         setInterval(function() {
             dispatch(fetchExchangerates());
           }, 10000);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
        if (currencies && !exchangePocketValueFrom) {
             dispatch(setExchangePocketValueFrom(''));
        }
-    }, [currencies]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [currencies, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (currencies) {
             dispatch(setExchangePocketValueFrom(exchangePocketValueFrom));
         }
-    }, [exchangePocketFrom, exchangePocketTo]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [exchangePocketFrom, exchangePocketTo, dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className="exchange-pocket">
+        <div id="exchange-pocket">
             <div className="form-group row">
                 <div className="col-sm-6">
                     <SelectPocket 
                         activePocket={exchangePocketFrom}
                         allPockets={myPockets}
                         onPocketClick={setExchangePocketFrom}
+                        id="pocket-from"
                     />
                 </div>
                 <div className="col-sm-6">
@@ -75,7 +76,7 @@ function ExchangePocket() {
                         <input 
                             type="number"
                             className="form-control"
-                            id="valueFrom"
+                            id="value-from"
                             step=".01"
                             value={exchangePocketValueFrom}
                             onChange={(e) => dispatch(setExchangePocketValueFrom(e.target.value))}
@@ -97,6 +98,7 @@ function ExchangePocket() {
                         activePocket={exchangePocketTo}
                         allPockets={myPockets}
                         onPocketClick={setExchangePocketTo}
+                        id="pocket-to"
                     />
                 </div>
                 <div className="col-sm-6">
@@ -109,7 +111,7 @@ function ExchangePocket() {
                         <input
                             type="number"
                             className="form-control"
-                            id="valueFrom"
+                            id="value-to"
                             step=".01"
                             value={exchangePocketValueTo}
                             onChange={(e) => dispatch(setExchangePocketValueTo(e.target.value))}
@@ -118,7 +120,7 @@ function ExchangePocket() {
                 </div>
             </div>
             <div className="form-group text-center">
-                <button disabled={!exchangeAllowed} className="btn btn-primary" onClick={() => dispatch(exchangePockets())}>
+                <button id="make-exchange" disabled={!exchangeAllowed} className="btn btn-primary" onClick={() => dispatch(exchangePockets())}>
                     <FontAwesomeIcon icon={faSync}/> Exchange
                 </button>
             </div>
